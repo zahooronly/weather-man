@@ -67,7 +67,7 @@ const getYearlyStats = (year) => {
   return result;
 };
 
-const monthlyData = (yearSlashMonth) => {
+const getMonthlyStatistics = (yearSlashMonth) => {
   const monthlyValues = getMonthlyData(yearSlashMonth);
   let monthlyTotal = {
     totalHighTemp: 0,
@@ -81,17 +81,17 @@ const monthlyData = (yearSlashMonth) => {
       monthlyTotal.totalHumidity += parseInt(item.maxHumidity);
     });
   }
-  const totalDays = monthlyValues.length;
+  const totalDaysOfMonth = monthlyValues.length;
 
   return [
-    `Highest average: ${Math.floor(monthlyTotal.totalHighTemp / totalDays)}C`,
-    `Lowest average: ${Math.floor(monthlyTotal.totalLowTemp / totalDays)}C`,
+    `Highest average: ${Math.floor(monthlyTotal.totalHighTemp / totalDaysOfMonth)}C`,
+    `Lowest average: ${Math.floor(monthlyTotal.totalLowTemp / totalDaysOfMonth)}C`,
     `Average Mean Humidity: ${Math.floor(
-      monthlyTotal.totalHumidity / totalDays
+      monthlyTotal.totalHumidity / totalDaysOfMonth
     )}%`,
   ];
 };
-const dailyData = (yearSlashMonth) => {
+const getDailyStats = (yearSlashMonth) => {
   const monthlyValues = getMonthlyData(yearSlashMonth);
   let output = [];
   monthlyValues.map((item) => {
@@ -107,5 +107,5 @@ const dailyData = (yearSlashMonth) => {
 };
 
 console.log(getYearlyStats(2010));
-console.log(monthlyData("2010/4"));
-console.log(dailyData("2010/4"));
+console.log(getMonthlyStatistics("2010/4"));
+console.log(getDailyStats("2010/4"));
