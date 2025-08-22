@@ -101,9 +101,21 @@ const monthlyData = (yearSlashMonth) => {
   ];
 };
 const dailyData = (yearSlashMonth) => {
-  const year = parseInt(yearSlashMonth.split("/")[0]);
-  const month = parseInt(yearSlashMonth.split("/")[1]);
+  const monthlyValues = monthlyValue(yearSlashMonth);
+  let output = [];
+  monthlyValues.map((item) => {
+    output.push([
+      `${extractDay(item)} ${extractMaxTemperature(
+        item
+      )} ${extractMaxTemperature(item)}C`,
+      `${extractDay(item)} ${extractMinTemperature(
+        item
+      )} ${extractMinTemperature(item)}C`,
+    ]);
+  });
+  return output;
 };
 
-console.log(yearlyData(2010));
-console.log(monthlyData("2010/4"));
+// console.log(yearlyData(2010));
+// console.log(monthlyData("2010/4"));
+console.log(dailyData("2010/4"));
