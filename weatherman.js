@@ -2,9 +2,6 @@ import { weatherData } from "./weather-data.js";
 import {
   extractYear,
   extractDay,
-  extractHumidity,
-  extractMaxTemperature,
-  extractMinTemperature,
   extractMonth,
   monthNumberToName,
 } from "./utils.js";
@@ -39,9 +36,9 @@ const yearlyData = (year) => {
   };
   const yearly = weatherData.filter((item) => year == extractYear(item));
   yearly.map((item, index) => {
-    let maxTemp = extractMaxTemperature(item);
-    let minTemp = extractMinTemperature(item);
-    let mostHumidity = extractHumidity(item);
+    let maxTemp = parseInt(item.maxTemperatureC);
+    let minTemp = parseInt(item.minTemperatureC);
+    let mostHumidity = parseInt(item.maxHumidity);
     if (maxTemp > stats.maxTemp.value) {
       stats.maxTemp.value = maxTemp;
       stats.maxTemp.index = index;
@@ -83,9 +80,9 @@ const monthlyData = (yearSlashMonth) => {
   };
   if (monthlyValues) {
     monthlyValues.map((item) => {
-      monthlyTotal.totalHighTemp += extractMaxTemperature(item);
-      monthlyTotal.totalLowTemp += extractMinTemperature(item);
-      monthlyTotal.totalHumidity += extractHumidity(item);
+      monthlyTotal.totalHighTemp += parseInt(item.maxTemperatureC);
+      monthlyTotal.totalLowTemp += parseInt(item.minTemperatureC);
+      monthlyTotal.totalHumidity += parseInt(item.maxHumidity);
     });
   }
   const totalDays = monthlyValues.length;
@@ -104,18 +101,13 @@ const dailyData = (yearSlashMonth) => {
   const monthlyValues = monthlyValue(yearSlashMonth);
   let output = [];
   monthlyValues.map((item) => {
-    output.push(
-      [
-        `${extractDay(item)} ${"+".repeat(
-          extractMaxTemperature(item)
-        )} ${extractMaxTemperature(item)}C`,
-      ],
-      [
-        `${extractDay(item)} ${"+".repeat(
-          extractMinTemperature(item)
-        )} ${extractMinTemperature(item)}C`,
-      ]
-    );
+    output.push([
+      `${extractDay(item)} ${"+".repeat(
+        parseInt(item.maxTemperatureC)
+      )} ${parseInt(item.maxTemperatureC)}C ${extractDay(item)} ${"+".repeat(
+        parseInt(item.minTemperatureC)
+      )} ${parseInt(item.minTemperatureC)}C`,
+    ]);
   });
   return output;
 };
