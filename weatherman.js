@@ -1,6 +1,5 @@
 import { weatherData } from "./weather-data.js";
 
-
 const extractYear = (item) => {
   if (item.date) return parseInt(item.date.split("-")[0]);
 };
@@ -36,12 +35,39 @@ const maxValue = (arr) => {
 };
 
 const yearlyData = (year) => {
+  let stats = {
+    maxTemp: {
+      value: 0,
+      index: 0,
+    },
+    minTemp: {
+      value: 200,
+      index: 0,
+    },
+    mostHumidity: {
+      value: 0,
+      index: 0,
+    },
+  };
   const yearly = weatherData.filter((item) => year == extractYear(item));
-  const yearlyMaxTemp = yearly.map((item) => {
-    if (extractMaxTemperature(item)) return extractMaxTemperature(item);
+  yearly.map((item, index) => {
+    let maxTemp = extractMaxTemperature(item);
+    let minTemp = extractMinTemperature(item);
+    let mostHumidity = extractHumidity(item);
+    if (maxTemp > stats.maxTemp.value) {
+      stats.maxTemp.value = maxTemp;
+      stats.maxTemp.index = index;
+    }
+    if (minTemp < stats.minTemp.value) {
+      stats.minTemp.value = minTemp;
+      stats.minTemp.index = index;
+    }
+    if (mostHumidity > stats.mostHumidity.value) {
+      stats.mostHumidity.value = mostHumidity;
+      stats.mostHumidity.index = index;
+    }
   });
-
-  return maxValue(yearlyMaxTemp);
+  return stats;
 };
 
-console.log(yearlyData(2013));
+console.log(yearlyData(2010));
