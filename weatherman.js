@@ -34,16 +34,12 @@ const maxValue = (arr) => {
   return maxValue;
 };
 
-
-
 const yearlyData = (year) => {
   const yearly = weatherData.filter((item) => year == extractYear(item));
   const yearlyMaxTemp = yearly.map((item) => {
     if (extractMaxTemperature(item)) return extractMaxTemperature(item);
   });
-  const statistics={
-    
-  }
+
   return maxValue(yearlyMaxTemp);
 };
 
