@@ -116,6 +116,6 @@ const dailyData = (yearSlashMonth) => {
   return output;
 };
 
-// console.log(yearlyData(2010));
-// console.log(monthlyData("2010/4"));
+console.log(yearlyData(2010));
+console.log(monthlyData("2010/4"));
 console.log(dailyData("2010/4"));
