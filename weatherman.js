@@ -9,6 +9,19 @@ import {
   monthNumberToName,
 } from "./utils.js";
 
+const monthlyValue = (yearSlashMonth) => {
+  const year = parseInt(yearSlashMonth.split("/")[0]);
+  const month = parseInt(yearSlashMonth.split("/")[1]);
+  const result = weatherData.filter((item) => {
+    if (extractYear(item) == year) {
+      if (extractMonth(item) == month) {
+        return item;
+      }
+    }
+  });
+  return result;
+};
+
 const yearlyData = (year) => {
   let stats = {
     maxTemp: {
@@ -57,8 +70,7 @@ const yearlyData = (year) => {
 };
 
 const monthlyData = (yearSlashMonth) => {
-  const year = parseInt(yearSlashMonth.split("/")[0]);
-  const month = parseInt(yearSlashMonth.split("/")[1]);
+  const monthlyValues = monthlyValue(yearSlashMonth);
   let monthlyTotal = {
     totalHighTemp: 0,
     totalLowTemp: 0,
@@ -69,19 +81,14 @@ const monthlyData = (yearSlashMonth) => {
     averageLowTemp: 0,
     averageHumidity: 0,
   };
-  const monthlyValue = weatherData.filter((item) => {
-    if (extractYear(item) == year) {
-      if (extractMonth(item) == month) {
-        return item;
-      }
-    }
-  });
-  monthlyValue.map((item) => {
-    monthlyTotal.totalHighTemp += extractMaxTemperature(item);
-    monthlyTotal.totalLowTemp += extractMinTemperature(item);
-    monthlyTotal.totalHumidity += extractHumidity(item);
-  });
-  const totalDays = monthlyValue.length;
+  if (monthlyValues) {
+    monthlyValues.map((item) => {
+      monthlyTotal.totalHighTemp += extractMaxTemperature(item);
+      monthlyTotal.totalLowTemp += extractMinTemperature(item);
+      monthlyTotal.totalHumidity += extractHumidity(item);
+    });
+  }
+  const totalDays = monthlyValues.length;
 
   result.averageHighTemp = Math.floor(monthlyTotal.totalHighTemp / totalDays);
   result.averageLowTemp = Math.floor(monthlyTotal.totalLowTemp / totalDays);
@@ -93,7 +100,10 @@ const monthlyData = (yearSlashMonth) => {
     `Average Mean Humidity: ${result.averageHumidity}%`,
   ];
 };
+const dailyData = (yearSlashMonth) => {
+  const year = parseInt(yearSlashMonth.split("/")[0]);
+  const month = parseInt(yearSlashMonth.split("/")[1]);
+};
 
 console.log(yearlyData(2010));
 console.log(monthlyData("2010/4"));
-
