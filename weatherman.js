@@ -37,12 +37,12 @@ const monthNumberToName = (n) => {
   return months[n - 1];
 };
 
-console.log(extractYear(weatherData[0]));
-console.log(extractMonth(weatherData[0]));
-console.log(extractDay(weatherData[0]));
-console.log(extractMaxTemperature(weatherData[0]));
-console.log(extractMinTemperature(weatherData[0]));
-console.log(extractHumidity(weatherData[0]));
+// console.log(extractYear(weatherData[0]));
+// console.log(extractMonth(weatherData[0]));
+// console.log(extractDay(weatherData[0]));
+// console.log(extractMaxTemperature(weatherData[0]));
+// console.log(extractMinTemperature(weatherData[0]));
+// console.log(extractHumidity(weatherData[0]));
 
 const yearlyData = (year) => {
   let stats = {
@@ -83,8 +83,33 @@ const yearlyData = (year) => {
 const monthlyData = (yearSlashMonth) => {
   const year = parseInt(yearSlashMonth.split("/")[0]);
   const month = parseInt(yearSlashMonth.split("/")[1]);
-  console.log(year, monthNumberToName(month));
-  return monthNumberToName(month);
+  let montlyTotal = {
+    totalHighTemp: 0,
+    totalLowTemp: 0,
+    totalHumidity: 0,
+  };
+  let result = {
+    averageHighTemp: 0,
+    averageLowTemp: 0,
+    averageHumidity: 0,
+  };
+  const monthlyValue = weatherData.filter((item) => {
+    if (extractYear(item) == year) {
+      if (extractMonth(item) == month) {
+        return item;
+      }
+    }
+  });
+  monthlyValue.map((item) => {
+    montlyTotal.totalHighTemp += extractMaxTemperature(item);
+    montlyTotal.totalLowTemp += extractMinTemperature(item);
+    montlyTotal.totalHumidity += extractHumidity(item);
+  });
+  const totalDays = monthlyValue.length;
+  result.averageHighTemp = montlyTotal.totalHighTemp / totalDays;
+  result.averageLowTemp = montlyTotal.totalLowTemp / totalDays;
+  result.averageHumidity = montlyTotal.totalHumidity / totalDays;
+  return result;
 };
 
 console.log(monthlyData("2010/4"));
