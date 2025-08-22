@@ -25,3 +25,11 @@ console.log(extractDay(weatherData[0]));
 console.log(extractMaxTemperature(weatherData[0]));
 console.log(extractMinTemperature(weatherData[0]));
 console.log(extractHumidity(weatherData[0]));
+
+const maxValue = (arr) => {
+  let maxValue = 0;
+  for (let temp in arr) {
+    if (arr[temp] > maxValue) maxValue = temp;
+  }
+  return maxValue;
+};
