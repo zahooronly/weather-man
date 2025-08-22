@@ -19,6 +19,24 @@ const extractHumidity = (item) => {
   if (item.maxHumidity) return parseInt(item.maxHumidity);
 };
 
+const monthNumberToName = (n) => {
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  return months[n - 1];
+};
+
 console.log(extractYear(weatherData[0]));
 console.log(extractMonth(weatherData[0]));
 console.log(extractDay(weatherData[0]));
@@ -62,4 +80,12 @@ const yearlyData = (year) => {
   return stats;
 };
 
-console.log(yearlyData(2010));
+const monthlyData = (yearSlashMonth) => {
+  const year = parseInt(yearSlashMonth.split("/")[0]);
+  const month = parseInt(yearSlashMonth.split("/")[1]);
+  console.log(year, monthNumberToName(month));
+  return monthNumberToName(month);
+};
+
+console.log(monthlyData("2010/4"));
+// console.log(yearlyData(2010));
