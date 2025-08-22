@@ -1,41 +1,13 @@
 import { weatherData } from "./weather-data.js";
-
-const extractYear = (item) => {
-  if (item.date) return parseInt(item.date.split("-")[0]);
-};
-const extractMonth = (item) => {
-  if (item.date) return parseInt(item.date.split("-")[1]);
-};
-const extractDay = (item) => {
-  if (item.date) return parseInt(item.date.split("-")[2]);
-};
-const extractMaxTemperature = (item) => {
-  if (item.maxTemperatureC) return parseInt(item.maxTemperatureC);
-};
-const extractMinTemperature = (item) => {
-  if (item.minTemperatureC) return parseInt(item.minTemperatureC);
-};
-const extractHumidity = (item) => {
-  if (item.maxHumidity) return parseInt(item.maxHumidity);
-};
-
-const monthNumberToName = (n) => {
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  return months[n - 1];
-};
+import {
+  extractYear,
+  extractDay,
+  extractHumidity,
+  extractMaxTemperature,
+  extractMinTemperature,
+  extractMonth,
+  monthNumberToName,
+} from "./utils.js";
 
 const yearlyData = (year) => {
   let stats = {
@@ -109,15 +81,19 @@ const monthlyData = (yearSlashMonth) => {
     monthlyTotal.totalLowTemp += extractMinTemperature(item);
     monthlyTotal.totalHumidity += extractHumidity(item);
   });
-  console.log(monthlyTotal);
   const totalDays = monthlyValue.length;
 
   result.averageHighTemp = Math.floor(monthlyTotal.totalHighTemp / totalDays);
   result.averageLowTemp = Math.floor(monthlyTotal.totalLowTemp / totalDays);
   result.averageHumidity = Math.floor(monthlyTotal.totalHumidity / totalDays);
 
-  return result;
+  return [
+    `Highest average: ${result.averageHighTemp}C`,
+    `Lowest average: ${result.averageLowTemp}C`,
+    `Average Mean Humidity: ${result.averageHumidity}%`,
+  ];
 };
 
-console.log(monthlyData("2010/4"));
 console.log(yearlyData(2010));
+console.log(monthlyData("2010/4"));
+
