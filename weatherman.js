@@ -37,13 +37,6 @@ const monthNumberToName = (n) => {
   return months[n - 1];
 };
 
-// console.log(extractYear(weatherData[0]));
-// console.log(extractMonth(weatherData[0]));
-// console.log(extractDay(weatherData[0]));
-// console.log(extractMaxTemperature(weatherData[0]));
-// console.log(extractMinTemperature(weatherData[0]));
-// console.log(extractHumidity(weatherData[0]));
-
 const yearlyData = (year) => {
   let stats = {
     maxTemp: {
@@ -77,13 +70,24 @@ const yearlyData = (year) => {
       stats.mostHumidity.index = index;
     }
   });
-  return stats;
+  let result = [
+    `Highest: ${stats.maxTemp.value}C on ${monthNumberToName(
+      extractMonth(weatherData[stats.maxTemp.index])
+    )} ${extractDay(weatherData[stats.maxTemp.index])}`,
+    `Lowest: ${stats.minTemp.value}C on ${monthNumberToName(
+      extractMonth(weatherData[stats.minTemp.index])
+    )} ${extractDay(weatherData[stats.minTemp.index])}`,
+    `Humidity: ${stats.mostHumidity.value}% on ${monthNumberToName(
+      extractMonth(weatherData[stats.mostHumidity.index])
+    )} ${extractDay(weatherData[stats.mostHumidity.index])}`,
+  ];
+  return result;
 };
 
 const monthlyData = (yearSlashMonth) => {
   const year = parseInt(yearSlashMonth.split("/")[0]);
   const month = parseInt(yearSlashMonth.split("/")[1]);
-  let montlyTotal = {
+  let monthlyTotal = {
     totalHighTemp: 0,
     totalLowTemp: 0,
     totalHumidity: 0,
@@ -101,16 +105,19 @@ const monthlyData = (yearSlashMonth) => {
     }
   });
   monthlyValue.map((item) => {
-    montlyTotal.totalHighTemp += extractMaxTemperature(item);
-    montlyTotal.totalLowTemp += extractMinTemperature(item);
-    montlyTotal.totalHumidity += extractHumidity(item);
+    monthlyTotal.totalHighTemp += extractMaxTemperature(item);
+    monthlyTotal.totalLowTemp += extractMinTemperature(item);
+    monthlyTotal.totalHumidity += extractHumidity(item);
   });
+  console.log(monthlyTotal);
   const totalDays = monthlyValue.length;
-  result.averageHighTemp = montlyTotal.totalHighTemp / totalDays;
-  result.averageLowTemp = montlyTotal.totalLowTemp / totalDays;
-  result.averageHumidity = montlyTotal.totalHumidity / totalDays;
+
+  result.averageHighTemp = Math.floor(monthlyTotal.totalHighTemp / totalDays);
+  result.averageLowTemp = Math.floor(monthlyTotal.totalLowTemp / totalDays);
+  result.averageHumidity = Math.floor(monthlyTotal.totalHumidity / totalDays);
+
   return result;
 };
 
 console.log(monthlyData("2010/4"));
-// console.log(yearlyData(2010));
+console.log(yearlyData(2010));
