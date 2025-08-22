@@ -105,11 +105,11 @@ const dailyData = (yearSlashMonth) => {
   let output = [];
   monthlyValues.map((item) => {
     output.push([
-      `${extractDay(item)} ${extractMaxTemperature(
-        item
-      )} ${extractMaxTemperature(item)}C`,
-      `${extractDay(item)} ${extractMinTemperature(
-        item
+      `${extractDay(item)}  ${"+".repeat(
+        extractMaxTemperature(item)
+      )} ${extractMaxTemperature(item)}C`],[
+      `${extractDay(item)} ${"+".repeat(
+        extractMinTemperature(item)
       )} ${extractMinTemperature(item)}C`,
     ]);
   });
