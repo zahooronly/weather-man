@@ -34,12 +34,14 @@ const getYearlyStats = (year) => {
       index: 0,
     },
   };
+
   weatherData
     .filter((item) => year == extractYear(item))
     .map((item, index) => {
       let maxTemp = parseInt(item.maxTemperatureC);
       let minTemp = parseInt(item.minTemperatureC);
       let mostHumidity = parseInt(item.maxHumidity);
+
       if (maxTemp > stats.maxTemp.value) {
         stats.maxTemp.value = maxTemp;
         stats.maxTemp.index = index;
@@ -53,7 +55,8 @@ const getYearlyStats = (year) => {
         stats.mostHumidity.index = index;
       }
     });
-  let result = [
+
+  return [
     `Highest: ${stats.maxTemp.value}C on ${monthNumberToName(
       extractMonth(weatherData[stats.maxTemp.index])
     )} ${extractDay(weatherData[stats.maxTemp.index])}`,
@@ -64,7 +67,6 @@ const getYearlyStats = (year) => {
       extractMonth(weatherData[stats.mostHumidity.index])
     )} ${extractDay(weatherData[stats.mostHumidity.index])}`,
   ];
-  return result;
 };
 
 const getMonthlyStatistics = (yearSlashMonth) => {
@@ -84,8 +86,12 @@ const getMonthlyStatistics = (yearSlashMonth) => {
   const totalDaysOfMonth = monthlyValues.length;
 
   return [
-    `Highest average: ${Math.floor(monthlyTotal.totalHighTemp / totalDaysOfMonth)}C`,
-    `Lowest average: ${Math.floor(monthlyTotal.totalLowTemp / totalDaysOfMonth)}C`,
+    `Highest average: ${Math.floor(
+      monthlyTotal.totalHighTemp / totalDaysOfMonth
+    )}C`,
+    `Lowest average: ${Math.floor(
+      monthlyTotal.totalLowTemp / totalDaysOfMonth
+    )}C`,
     `Average Mean Humidity: ${Math.floor(
       monthlyTotal.totalHumidity / totalDaysOfMonth
     )}%`,
