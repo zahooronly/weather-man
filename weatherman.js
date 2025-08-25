@@ -21,51 +21,38 @@ const getMonthlyData = (yearSlashMonth) => {
 
 const getYearlyStats = (year) => {
   let stats = {
-    maxTemp: {
-      value: 0,
-      index: 0,
-    },
-    minTemp: {
-      value: 200,
-      index: 0,
-    },
-    mostHumidity: {
-      value: 0,
-      index: 0,
-    },
+    maxTemp: weatherData[0],
+    minTemp: weatherData[0],
+    mostHumidity: weatherData[0],
   };
 
   weatherData
     .filter((item) => year == extractYear(item))
-    .map((item, index) => {
+    .forEach((item) => {
       let maxTemp = parseInt(item.maxTemperatureC);
       let minTemp = parseInt(item.minTemperatureC);
       let mostHumidity = parseInt(item.maxHumidity);
 
-      if (maxTemp > stats.maxTemp.value) {
-        stats.maxTemp.value = maxTemp;
-        stats.maxTemp.index = index;
+      if (maxTemp > stats.maxTemp.maxTemperatureC) {
+        stats.maxTemp = item;
       }
-      if (minTemp < stats.minTemp.value) {
-        stats.minTemp.value = minTemp;
-        stats.minTemp.index = index;
+      if (minTemp < stats.minTemp.minTemperatureC) {
+        stats.minTemp = item;
       }
-      if (mostHumidity > stats.mostHumidity.value) {
-        stats.mostHumidity.value = mostHumidity;
-        stats.mostHumidity.index = index;
+      if (mostHumidity > stats.mostHumidity.maxHumidity) {
+        stats.mostHumidity = item;
       }
     });
-
   return [
-    `Highest: ${stats.maxTemp.value}C on ${getMonthNameFromNumber(
-      extractMonth(weatherData[stats.maxTemp.index])
-    )} ${extractDay(weatherData[stats.maxTemp.index])}`,
-    `Lowest: ${stats.minTemp.value}C on ${getMonthNameFromNumber(
-      extractMonth(weatherData[stats.minTemp.index])
-    )} ${extractDay(weatherData[stats.minTemp.index])}`,
-    `Humidity: ${stats.mostHumidity.value}% on ${getMonthNameFromNumber(
-      extractMonth(weatherData[stats.mostHumidity.index])
-    )} ${extractDay(weatherData[stats.mostHumidity.index])}`,
+    `Highest: ${stats.maxTemp.maxTemperatureC}C on ${getMonthNameFromNumber(
+      extractMonth(stats.maxTemp)
+    )} ${extractDay(stats.maxTemp)}`,
+    `Lowest: ${stats.minTemp.minTemperatureC}C on ${getMonthNameFromNumber(
+      extractMonth(stats.minTemp)
+    )} ${extractDay(stats.minTemp)}`,
+    `Humidity: ${stats.mostHumidity.maxHumidity}% on ${getMonthNameFromNumber(
+      extractMonth(stats.mostHumidity)
+    )} ${extractDay(stats.mostHumidity)}`,
   ];
 };
 
@@ -77,7 +64,7 @@ const getMonthlyStatistics = (yearSlashMonth) => {
     totalHumidity: 0,
   };
   if (monthlyValues) {
-    monthlyValues.map((item) => {
+    monthlyValues.forEach((item) => {
       monthlyTotal.totalHighTemp += parseInt(item.maxTemperatureC);
       monthlyTotal.totalLowTemp += parseInt(item.minTemperatureC);
       monthlyTotal.totalHumidity += parseInt(item.maxHumidity);
@@ -86,25 +73,25 @@ const getMonthlyStatistics = (yearSlashMonth) => {
   const totalDaysOfMonth = monthlyValues.length;
 
   return [
-    `Highest average: ${Math.floor(
-      monthlyTotal.totalHighTemp / totalDaysOfMonth
+    `Highest average: ${(monthlyTotal.totalHighTemp / totalDaysOfMonth).toFixed(
+      2
     )}C`,
-    `Lowest average: ${Math.floor(
-      monthlyTotal.totalLowTemp / totalDaysOfMonth
+    `Lowest average: ${(monthlyTotal.totalLowTemp / totalDaysOfMonth).toFixed(
+      2
     )}C`,
-    `Average Mean Humidity: ${Math.floor(
+    `Average Mean Humidity: ${(
       monthlyTotal.totalHumidity / totalDaysOfMonth
-    )}%`,
+    ).toFixed(2)}%`,
   ];
 };
 const getDailyStats = (yearSlashMonth) => {
   const monthlyValues = getMonthlyData(yearSlashMonth);
   let output = [];
-  monthlyValues.map((item) => {
+  monthlyValues.forEach((item) => {
     output.push([
       `${extractDay(item)} ${"+".repeat(
         parseInt(item.maxTemperatureC)
-      )} ${parseInt(item.maxTemperatureC)}C ${extractDay(item)} ${"+".repeat(
+      )} ${parseInt(item.maxTemperatureC)}C  ${extractDay(item)} ${"+".repeat(
         parseInt(item.minTemperatureC)
       )} ${parseInt(item.minTemperatureC)}C`,
     ]);
@@ -112,6 +99,6 @@ const getDailyStats = (yearSlashMonth) => {
   return output;
 };
 
-console.log(getYearlyStats(2010));
+console.log(getYearlyStats(2015));
 console.log(getMonthlyStatistics("2010/4"));
 console.log(getDailyStats("2010/4"));
