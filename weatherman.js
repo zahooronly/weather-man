@@ -10,11 +10,7 @@ const getMonthlyData = (yearSlashMonth) => {
   const year = parseInt(yearSlashMonth.split("/")[0]);
   const month = parseInt(yearSlashMonth.split("/")[1]);
   const result = weatherData.filter((item) => {
-    if (extractYear(item) == year) {
-      if (extractMonth(item) == month) {
-        return item;
-      }
-    }
+    if (extractYear(item) == year && extractMonth(item) == month) return item;
   });
   return result;
 };
