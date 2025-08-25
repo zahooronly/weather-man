@@ -3,7 +3,7 @@ import {
   extractYear,
   extractDay,
   extractMonth,
-  monthNumberToName,
+  getMonthNameFromNumber,
 } from "./utils.js";
 
 const getMonthlyData = (yearSlashMonth) => {
@@ -57,13 +57,13 @@ const getYearlyStats = (year) => {
     });
 
   return [
-    `Highest: ${stats.maxTemp.value}C on ${monthNumberToName(
+    `Highest: ${stats.maxTemp.value}C on ${getMonthNameFromNumber(
       extractMonth(weatherData[stats.maxTemp.index])
     )} ${extractDay(weatherData[stats.maxTemp.index])}`,
-    `Lowest: ${stats.minTemp.value}C on ${monthNumberToName(
+    `Lowest: ${stats.minTemp.value}C on ${getMonthNameFromNumber(
       extractMonth(weatherData[stats.minTemp.index])
     )} ${extractDay(weatherData[stats.minTemp.index])}`,
-    `Humidity: ${stats.mostHumidity.value}% on ${monthNumberToName(
+    `Humidity: ${stats.mostHumidity.value}% on ${getMonthNameFromNumber(
       extractMonth(weatherData[stats.mostHumidity.index])
     )} ${extractDay(weatherData[stats.mostHumidity.index])}`,
   ];
