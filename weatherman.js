@@ -16,39 +16,44 @@ const getMonthlyData = (yearSlashMonth) => {
 };
 
 const getYearlyStats = (year) => {
-  let stats = {
-    maxTemp: weatherData[0],
-    minTemp: weatherData[0],
-    mostHumidity: weatherData[0],
+  const stats = {
+    maxTemperatureRecord: weatherData[0],
+    minTemperatureRecord: weatherData[0],
+    maxHumidityRecord: weatherData[0],
   };
 
   weatherData
     .filter((item) => year == extractYear(item))
     .forEach((item) => {
-      let maxTemp = parseInt(item.maxTemperatureC);
-      let minTemp = parseInt(item.minTemperatureC);
-      let mostHumidity = parseInt(item.maxHumidity);
-
-      if (maxTemp > stats.maxTemp.maxTemperatureC) {
-        stats.maxTemp = item;
-      }
-      if (minTemp < stats.minTemp.minTemperatureC) {
-        stats.minTemp = item;
-      }
-      if (mostHumidity > stats.mostHumidity.maxHumidity) {
-        stats.mostHumidity = item;
-      }
+      if (
+        parseInt(item.maxTemperatureC) >
+        stats.maxTemperatureRecord.maxTemperatureC
+      )
+        stats.maxTemperatureRecord = item;
+      if (
+        parseInt(item.minTemperatureC) <
+        stats.minTemperatureRecord.minTemperatureC
+      )
+        stats.minTemperatureRecord = item;
+      if (parseInt(item.maxHumidity) > stats.maxHumidityRecord.maxHumidity)
+        stats.maxHumidityRecord = item;
     });
   return [
-    `Highest: ${stats.maxTemp.maxTemperatureC}C on ${getMonthNameFromNumber(
-      extractMonth(stats.maxTemp)
-    )} ${extractDay(stats.maxTemp)}`,
-    `Lowest: ${stats.minTemp.minTemperatureC}C on ${getMonthNameFromNumber(
-      extractMonth(stats.minTemp)
-    )} ${extractDay(stats.minTemp)}`,
-    `Humidity: ${stats.mostHumidity.maxHumidity}% on ${getMonthNameFromNumber(
-      extractMonth(stats.mostHumidity)
-    )} ${extractDay(stats.mostHumidity)}`,
+    `Highest: ${
+      stats.maxTemperatureRecord.maxTemperatureC
+    }C on ${getMonthNameFromNumber(
+      extractMonth(stats.maxTemperatureRecord)
+    )} ${extractDay(stats.maxTemperatureRecord)}`,
+    `Lowest: ${
+      stats.minTemperatureRecord.minTemperatureC
+    }C on ${getMonthNameFromNumber(
+      extractMonth(stats.minTemperatureRecord)
+    )} ${extractDay(stats.minTemperatureRecord)}`,
+    `Humidity: ${
+      stats.maxHumidityRecord.maxHumidity
+    }% on ${getMonthNameFromNumber(
+      extractMonth(stats.maxHumidityRecord)
+    )} ${extractDay(stats.maxHumidityRecord)}`,
   ];
 };
 
